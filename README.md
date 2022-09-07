@@ -1,18 +1,27 @@
-# Around the U.S. Back End  
+# Project 10: Around React
+### Overview  
+12-th project on Practicum  
   
-## Directories  
+**Intro**    
   
-`/data` — JSON files to temporarily emulate database integration.  
+This is a photo gallery  
   
-`/routes` — routing files.  
-  
-All other directories are optional and may be created by the developer if necessary.   
-  
-## Running the Project  
-  
-`npm run start` — to launch the server.  
-  
-`npm run dev` — to launch the server with the hot reload feature.  
+**Technologies I used in FRONTEND:**  
+_HTML_  
+_CSS Flexbox_  
+_CSS Grid Layout_  
+_BEM methodology_
+_Javascript_
+_ReactJS_
+_Fetch API_
 
+**Technologies I used in BACKEND:**
+_NodeJS_
+_ExpressJS_
 
+**IDE I used:**
+_Visual Studio Code_
+  
+* [Link to the REACT project on GitHub Pages](https://nigberg.github.io/around-react/)  
+  
 

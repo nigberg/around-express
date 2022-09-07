@@ -9,9 +9,9 @@ app.use('/', cardsRouter);
 const { PORT = 3000 } = process.env;
 
 app.listen(PORT, () => {
-  app.get('/', (req, res) => {
+  app.get('*', (req, res) => {
     res
       .status(404)
-      .send(JSON.stringify({ message: 'No data has been requested' }));
+      .send(JSON.stringify({ message: 'Requested resource not found' }));
   });
 });
