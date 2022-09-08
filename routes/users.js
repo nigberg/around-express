@@ -1,16 +1,19 @@
 const router = require('express').Router();
 const fs = require('fs').promises;
 const path = require('path');
+const { NOT_FOUND_CODE, SERVER_ERROR_CODE } = require('../utils/constants');
 
 router.get('/users', (req, res) => {
   fs.readFile(path.join(__dirname, '..', 'data', 'users.json'), {
     encoding: 'utf8',
   })
     .then((users) => {
+      // 'users' contains JSON string read from file
+      // sending JSON to client
       res.send(users);
     })
     .catch((err) => {
-      res.status(500).send(JSON.stringify({ message: err.message }));
+      res.status(SERVER_ERROR_CODE).send(JSON.stringify({ message: `Server error: ${err.message}` }));
     });
 });
 
@@ -19,15 +22,17 @@ router.get('/users/:id', (req, res) => {
     encoding: 'utf8',
   })
     .then((users) => {
+      // 'users' contains JSON string read from file
+      // converting JSON into JS Array to search in it
       const user = JSON.parse(users).find((item) => item._id === req.params.id);
       if (!user) {
-        res.status(404).send(JSON.stringify({ message: 'User ID not found' }));
+        res.status(NOT_FOUND_CODE).send(JSON.stringify({ message: 'User ID not found' }));
         return;
       }
       res.send(JSON.stringify(user));
     })
     .catch((err) => {
-      res.status(500).send(JSON.stringify({ message: err.message }));
+      res.status(SERVER_ERROR_CODE).send(JSON.stringify({ message: `Server error: ${err.message}` }));
     });
 });
 
