@@ -11,10 +11,10 @@ router.get('/cards', (req, res) => {
     .then((cards) => {
       // 'cards' contains JSON string read from file
       // sending JSON to client
-      res.send(cards);
+      res.send({ data: JSON.parse(cards) });
     })
     .catch((err) => {
-      res.status(SERVER_ERROR_CODE).send(JSON.stringify({ message: `Server error: ${err.message}` }));
+      res.status(SERVER_ERROR_CODE).send({ message: `Server error: ${err.message}` });
     });
 });
 
