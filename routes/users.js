@@ -29,7 +29,7 @@ router.get('/users/:id', (req, res) => {
         res.status(NOT_FOUND_CODE).send({ message: 'User ID not found' });
         return;
       }
-      res.send({ data: JSON.parse(user) });
+      res.send({ data: user });
     })
     .catch((err) => {
       res.status(SERVER_ERROR_CODE).send(JSON.stringify({ message: `Server error: ${err.message}` }));
