@@ -1,10 +1,10 @@
 # Project 10: Around React
 ### Overview  
-12-th project on Practicum  
+The 13-th project on Practicum  
   
 **Intro**    
   
-This is a photo gallery  
+This is a photo gallery backend project
   
 **Technologies I used in FRONTEND:**  
 _HTML_  
@@ -18,6 +18,8 @@ _Fetch API_
 **Technologies I used in BACKEND:**
 _NodeJS_
 _ExpressJS_
+_MongoDB_
+_Mongoose_
 
 **IDE I used:**
 _Visual Studio Code_
