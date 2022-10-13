@@ -1,5 +1,12 @@
 const {
-  OK_CODE, OK_CREATED_CODE, INVALID_DATA_CODE, NOT_FOUND_CODE, SERVER_ERROR_CODE,
+  OK_CODE,
+  OK_CREATED_CODE,
+  INVALID_DATA_CODE,
+  NOT_FOUND_CODE,
+  SERVER_ERROR_CODE,
+  NOT_FOUND_MESSAGE,
+  INVALID_DATA_MESSAGE,
+  SERVER_ERROR_MESSAGE,
 } = require('../utils/constants');
 const User = require('../models/user');
 
@@ -9,7 +16,7 @@ const getAllUsers = (req, res) => {
       res.status(OK_CODE).send({ data: users });
     })
     .catch(() => {
-      res.status(SERVER_ERROR_CODE).send({ message: 'An error has occured on server' });
+      res.status(SERVER_ERROR_CODE).send({ message: SERVER_ERROR_MESSAGE });
     });
 };
 
@@ -17,7 +24,7 @@ const getUser = (req, res) => {
   const { id } = req.params;
   User.findById(id)
     .orFail(() => {
-      const err = new Error('User not found');
+      const err = new Error(NOT_FOUND_MESSAGE);
       err.status = NOT_FOUND_CODE;
       throw err;
     })
@@ -28,9 +35,9 @@ const getUser = (req, res) => {
       if (err.status === NOT_FOUND_CODE) {
         res.status(NOT_FOUND_CODE).send({ message: err.message });
       } else if (err.name === 'CastError') {
-        res.status(INVALID_DATA_CODE).send({ message: 'Incorrect data format' });
+        res.status(INVALID_DATA_CODE).send({ message: INVALID_DATA_MESSAGE });
       } else {
-        res.status(SERVER_ERROR_CODE).send({ message: 'An error has occured on server' });
+        res.status(SERVER_ERROR_CODE).send({ message: SERVER_ERROR_MESSAGE });
       }
     });
 };
@@ -46,7 +53,7 @@ const createUser = (req, res) => {
         const errorsMessage = `${Object.values(err.errors).map((error) => error.message).join(', ')}`;
         res.status(INVALID_DATA_CODE).send({ message: errorsMessage });
       } else {
-        res.status(SERVER_ERROR_CODE).send({ message: 'An error has occured on server' });
+        res.status(SERVER_ERROR_CODE).send({ message: SERVER_ERROR_MESSAGE });
       }
     });
 };
@@ -55,6 +62,11 @@ const updateProfile = (req, res) => {
   const userId = req.user._id;
   const { name, about } = req.body;
   User.findByIdAndUpdate(userId, { name, about }, { new: true, runValidators: true })
+    .orFail(() => {
+      const err = new Error(NOT_FOUND_MESSAGE);
+      err.status = NOT_FOUND_CODE;
+      throw err;
+    })
     .then((user) => {
       res.status(OK_CREATED_CODE).send({ data: user });
     })
@@ -63,9 +75,11 @@ const updateProfile = (req, res) => {
         const errorsMessage = `${Object.values(err.errors).map((error) => error.message).join(', ')}`;
         res.status(INVALID_DATA_CODE).send({ message: errorsMessage });
       } else if (err.name === 'CastError') {
-        res.status(INVALID_DATA_CODE).send({ message: 'Incorrect data format' });
+        res.status(INVALID_DATA_CODE).send({ message: INVALID_DATA_MESSAGE });
+      } else if (err.status === NOT_FOUND_CODE) {
+        res.status(NOT_FOUND_CODE).send({ message: err.message });
       } else {
-        res.status(SERVER_ERROR_CODE).send({ message: 'An error has occured on server' });
+        res.status(SERVER_ERROR_CODE).send({ message: SERVER_ERROR_MESSAGE });
       }
     });
 };
@@ -74,6 +88,11 @@ const updateAvatar = (req, res) => {
   const userId = req.user._id;
   const { avatar } = req.body;
   User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
+    .orFail(() => {
+      const err = new Error(NOT_FOUND_MESSAGE);
+      err.status = NOT_FOUND_CODE;
+      throw err;
+    })
     .then((user) => {
       res.status(OK_CREATED_CODE).send({ data: user });
     })
@@ -82,9 +101,11 @@ const updateAvatar = (req, res) => {
         const errorsMessage = `${Object.values(err.errors).map((error) => error.message).join(', ')}`;
         res.status(INVALID_DATA_CODE).send({ message: errorsMessage });
       } else if (err.name === 'CastError') {
-        res.status(INVALID_DATA_CODE).send({ message: 'Incorrect data format' });
+        res.status(INVALID_DATA_CODE).send({ message: INVALID_DATA_MESSAGE });
+      } else if (err.status === NOT_FOUND_CODE) {
+        res.status(NOT_FOUND_CODE).send({ message: err.message });
       } else {
-        res.status(SERVER_ERROR_CODE).send({ message: 'An error has occured on server' });
+        res.status(SERVER_ERROR_CODE).send({ message: SERVER_ERROR_MESSAGE });
       }
     });
 };

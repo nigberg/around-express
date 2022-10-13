@@ -1,14 +1,18 @@
 const express = require('express');
 const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
-const { NOT_FOUND_CODE } = require('./utils/constants');
+const { NOT_FOUND_CODE, RATE_LIMITER_CONFIGURATIONS, MONGO_SERVER_ADDRESS } = require('./utils/constants');
+
+const limiter = rateLimit(RATE_LIMITER_CONFIGURATIONS);
 
 const app = express();
-mongoose.connect('mongodb://localhost:27017/aroundb');
+mongoose.connect(MONGO_SERVER_ADDRESS);
 
+app.use(limiter);
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
